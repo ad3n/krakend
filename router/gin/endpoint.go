@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/devopsfaith/krakend/config"
-	"github.com/devopsfaith/krakend/core"
 	"github.com/devopsfaith/krakend/proxy"
 	"github.com/devopsfaith/krakend/router"
 )
@@ -34,8 +33,6 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 	return func(c *gin.Context) {
 		requestCtx, cancel := context.WithTimeout(c, configuration.Timeout)
 
-		c.Header(core.KrakendHeaderName, core.KrakendHeaderValue)
-
 		response, err := prxy(requestCtx, requestGenerator(c, configuration.QueryString))
 
 		select {
@@ -46,11 +43,8 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 		default:
 		}
 
-		complete := router.HeaderIncompleteResponseValue
-
 		if response != nil && len(response.Data) > 0 {
 			if response.IsComplete {
-				complete = router.HeaderCompleteResponseValue
 				if isCacheEnabled {
 					c.Header("Cache-Control", cacheControlHeaderValue)
 				}
@@ -62,8 +56,6 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 				}
 			}
 		}
-
-		c.Header(router.CompleteResponseHeaderName, complete)
 
 		if err != nil {
 			c.Error(err)
