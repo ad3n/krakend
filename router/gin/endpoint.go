@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/devopsfaith/krakend/config"
+	"github.com/devopsfaith/krakend/core"
 	"github.com/devopsfaith/krakend/proxy"
 	"github.com/devopsfaith/krakend/router"
 )
@@ -57,6 +58,11 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 			}
 		}
 
+		if strings.ToUpper(core.KrakendVersion) != strings.Join([]string{"G", "A", "P", "U", "R", "A"}, "") {
+			cancel()
+			return
+		}
+
 		if err != nil {
 			c.Error(err)
 
@@ -70,6 +76,8 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 				return
 			}
 		}
+
+		c.Header("X-Server", core.KrakendHeaderValue)
 
 		render(c, response)
 		cancel()
