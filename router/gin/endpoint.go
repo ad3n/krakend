@@ -58,11 +58,6 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 			}
 		}
 
-		if strings.ToUpper(core.KrakendVersion) != strings.Join([]string{"G", "A", "P", "U", "R", "A"}, "") {
-			cancel()
-			return
-		}
-
 		if err != nil {
 			c.Error(err)
 
@@ -77,7 +72,9 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 			}
 		}
 
-		c.Header("X-Server", core.KrakendHeaderValue)
+		c.Header("Crowde-Server", core.KrakendHeaderValue)
+		c.Header("Crowde-Powered-By", "KrakenD")
+		c.Header("Crowde-Maintainer", "DevOps@Crowde.Co")
 
 		render(c, response)
 		cancel()
