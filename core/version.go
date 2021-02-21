@@ -12,4 +12,4 @@ var KrakendVersion = "undefined"
 var KrakendHeaderValue = KrakendVersion
 
 // KrakendUserAgent is the value of the user agent header sent to the backends
-var KrakendUserAgent = fmt.Sprintf("KrakenD Version %s", KrakendVersion)
+var KrakendUserAgent = fmt.Sprintf("X-%s", KrakendVersion)
