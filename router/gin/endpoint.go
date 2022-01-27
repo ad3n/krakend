@@ -72,9 +72,9 @@ func CustomErrorEndpointHandler(configuration *config.EndpointConfig, prxy proxy
 			}
 		}
 
-		c.Header("Crowde-Server", core.KrakendHeaderValue)
-		c.Header("Crowde-Powered-By", "KrakenD")
-		c.Header("Crowde-Maintainer", "DevOps@Crowde.Co")
+		c.Header("X-Server", core.KrakendHeaderValue)
+		c.Header("X-Powered-By", "KrakenD")
+		c.Header("X-Maintainer", "KejawenLab")
 
 		render(c, response)
 		cancel()
